@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 
-public class Main extends Thread {
+public class Main {
 
     public static String getDomain(String url) throws URISyntaxException {
         URI uri = new URI(url);
@@ -29,7 +29,7 @@ public class Main extends Thread {
         return content;
     }
 
-    public ArrayList<String> search(String city){
+    public String run(String city){
         String mainUrl = "https://fr.wikipedia.org/wiki/"+city;
         String html = this.getHtml(mainUrl);
 
@@ -46,8 +46,6 @@ public class Main extends Thread {
 
         try {
             domainName = getDomain(mainUrl);
-            int count = 0;
-
 
             while (matcherHref.find()) {
                 String url = matcherHref.group(1);
@@ -56,37 +54,29 @@ public class Main extends Thread {
                     Matcher matcherHttp = patternHttp.matcher(url);
                     if (!matcherHttp.find()) {
                         urls.add(domainName + url);
-                        System.out.println(url);
-                        sleep(200);
-                        count++;
                     } else {
                         urls.add(url);
-                        System.out.println(url);
-                        sleep(200);
-                        count++;
                     }
                 }
             }
 
-            System.out.println("Nombre de résultats : " + count);
-            return urls;
+            int count = 0;
+            for (String url : urls) {
+                System.out.println(url);
+                count++;
+            }
 
-        } catch (URISyntaxException | InterruptedException e) {
+            System.out.println(count + " resultats");
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @Override
-    public void run() {
-      this.search("Nantes");
-    }
-
     public static void main(String[] args){
 
         Main m = new Main();
-        Thread t = new Thread(m);
+        m.run("Nantes");
 
-        t.start();
     }
 }
