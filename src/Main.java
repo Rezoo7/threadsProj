@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 
-public class Main {
+public class Main extends Thread {
 
     public static String getDomain(String url) throws URISyntaxException {
         URI uri = new URI(url);
@@ -29,7 +29,7 @@ public class Main {
         return content;
     }
 
-    public String run(String city){
+    public ArrayList<String> search(String city){
         String mainUrl = "https://fr.wikipedia.org/wiki/"+city;
         String html = this.getHtml(mainUrl);
 
@@ -46,6 +46,8 @@ public class Main {
 
         try {
             domainName = getDomain(mainUrl);
+            int count = 0;
+
 
             while (matcherHref.find()) {
                 String url = matcherHref.group(1);
@@ -54,29 +56,37 @@ public class Main {
                     Matcher matcherHttp = patternHttp.matcher(url);
                     if (!matcherHttp.find()) {
                         urls.add(domainName + url);
+                        System.out.println(url);
+                        sleep(200);
+                        count++;
                     } else {
                         urls.add(url);
+                        System.out.println(url);
+                        sleep(200);
+                        count++;
                     }
                 }
             }
 
-            int count = 0;
-            for (String url : urls) {
-                System.out.println(url);
-                count++;
-            }
+            System.out.println("Nombre de résultats : " + count);
+            return urls;
 
-            System.out.println(count + " resultats");
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    @Override
+    public void run() {
+      this.search("Nantes");
+    }
+
     public static void main(String[] args){
 
         Main m = new Main();
-        m.run("Nantes");
+        Thread t = new Thread(m);
 
+        t.start();
     }
 }
