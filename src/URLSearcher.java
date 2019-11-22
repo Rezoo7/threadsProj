@@ -6,11 +6,19 @@ import java.util.regex.*;
 
 public class URLSearcher extends Thread {
 
+    /**
+     * Run du Thread
+     */
     @Override
     public void run() {
       this.search("Nantes");
     }
-	
+
+    /**
+     * Recherche les liens contenant la ville passee en parametre
+     * @param city : Ville recherchée sur sa page wiki
+     * @return liste : Liste des liens trouves
+     */
     public ArrayList<String> search(String city){
         String mainUrl = "https://fr.wikipedia.org/wiki/"+city;
         String html = this.getHtml(mainUrl);
@@ -50,7 +58,7 @@ public class URLSearcher extends Thread {
                 }
             }
 
-            System.out.println("Nombre de résultats : " + count);
+            System.out.println("Nombre de resultats : " + count);
             return urls;
 
         } catch (URISyntaxException | InterruptedException e) {
@@ -58,13 +66,24 @@ public class URLSearcher extends Thread {
         }
         return null;
     }
-    
+
+    /**
+     * Renvoie le domaine de l"url passe en parametre
+     * @param url
+     * @return domaine
+     * @throws URISyntaxException
+     */
     public static String getDomain(String url) throws URISyntaxException {
         URI uri = new URI(url);
         String dom = uri.getHost();
         return dom.startsWith("www.") ? dom.substring(4) : dom;
     }
 
+    /**
+     * Retourne le code de la page html
+     * @param url
+     * @return page html
+     */
     public String getHtml(String url) {
         String content = "";
         try {
