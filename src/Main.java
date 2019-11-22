@@ -8,9 +8,18 @@ public class Main {
     public static void main(String[] args){
     	
     	for (int i = 0; i < NB_THREADS; i++) {
-    		URLSearcher searcher = new URLSearcher(BASE_URL, SEARCHED_WORD, MAX_RESULTS);
-            Thread thread = new Thread(searcher);
-            thread.start();
+    	    String a = args[1];
+    	    String b = args[2];
+
+    	    if (a.equals("launcher.sh")){
+                URLSearcher searcher = new URLSearcher(BASE_URL, args[2], MAX_RESULTS);
+                Thread thread = new Thread(searcher);
+                thread.start();
+            }else{
+                URLSearcher searcher = new URLSearcher(BASE_URL, args[1], MAX_RESULTS);
+                Thread thread = new Thread(searcher);
+                thread.start();
+            }
     	}
         
     }
