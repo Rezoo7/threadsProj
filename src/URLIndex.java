@@ -8,7 +8,11 @@ public class URLIndex {
 		checkedURL = new ArrayList<>();
 	}
 	
-	public void addCheckedURL(String url) {
+	public synchronized boolean isInIndex(String url) {
+		return checkedURL.contains(url);
+	}
+	
+	public synchronized void addCheckedURL(String url) { 
 		checkedURL.add(url);
 	}
 	
