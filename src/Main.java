@@ -66,7 +66,7 @@ public class Main {
                 count++;
             }
 
-            System.out.println(count);
+            System.out.println(count + " resultats");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
